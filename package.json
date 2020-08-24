@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@apollo/react-hooks": "^4.0.0",
+    "apollo-client": "^2.6.10",
+    "moment": "^2.27.0"
+  }
+}
