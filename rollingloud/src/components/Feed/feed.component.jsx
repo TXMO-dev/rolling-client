@@ -5,7 +5,8 @@ import {useQuery,useApolloClient} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import classname from 'classname';
-import CreatePostComponent from './../posts/createpost.component';
+
+
 
 const usestyles = makeStyles({
    centerGrid:{
@@ -45,7 +46,7 @@ const FeedComponent = () => {
             </div>
           );
     }
-    const {getCars} = data;
+    const {getCars} = data;    
     
     return (
          <div className = {classes.centerGrid}>
@@ -64,7 +65,7 @@ const FeedComponent = () => {
     )
 }
 
-export default FeedComponent;
+export default FeedComponent;   
 
 
 const GET_CAR_QUERY = gql`
@@ -81,8 +82,19 @@ const GET_CAR_QUERY = gql`
             condition
             category
             likeCount
+            reviews{
+                review_id
+                username
+                user_image
+                body
+                createdAt
+            }
+            likes{
+                username
+            }
             reviewCount
             Images{
+            id
             path
             }
         }

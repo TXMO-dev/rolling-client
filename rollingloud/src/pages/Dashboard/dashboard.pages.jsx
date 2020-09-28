@@ -10,7 +10,6 @@ import LikesComponent from './../../components/likes/likes.components';
 import RecommendationComponent from './../../components/recommendations/recommendations.component';  
 import MiniDrawer from './../../components/drawer/drawer.component';
 import CartComponent from './../../components/cart/cart.component';  
-import CarComponent from './../../components/car/car.components'; 
 import CreatePostComponent from './../../components/posts/createpost.component';
 
 
@@ -27,7 +26,6 @@ const Dashboard = (props) => {
                 <Route path={`${props.match.url}/following`} component = {FollowingComponent} />
                 <Route path={`${props.match.url}/createPost`} component = {CreatePostComponent} />
                 <Route path={`${props.match.url}/followers`} component = {FollowersComponent} />
-                <Route path={`${props.match.url}/car/:carId`} component = {CarComponent} />
                 <Route path={`${props.match.url}/mycars`} component = {PostComponent} />
                 <Route path={`${props.match.url}/recommendations`} component = {RecommendationComponent} /> {/* recommendation is the get use by tags */}
                 <Route path={`${props.match.url}/cart`} component = {CartComponent} />

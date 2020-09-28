@@ -28,6 +28,8 @@ import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutline
 import { useQuery,useApolloClient} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp';
+import Badge from '@material-ui/core/Badge';
+import {cartItemsVar} from './../button/cartbutton/cache/cart.cache';
 
 
 
@@ -46,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
         margin: theme.spacing(1),
     },
+  },
+  colorChange:{
+    //just incase
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -189,7 +194,9 @@ const MiniDrawer = (props) => {
       },
       {
           name:'Cart',
-          icon: <ShoppingBasketOutlinedIcon/>,
+          icon: <Badge badgeContent={cartItemsVar().reduce((accumulator,currentValue) => {
+            return accumulator+currentValue.qty;
+          },0)} color="primary"><ShoppingBasketOutlinedIcon/></Badge>,
           path: `${props.match.url}/cart`
       },
       {
@@ -204,9 +211,10 @@ const MiniDrawer = (props) => {
       <CssBaseline />
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, {
+        className={clsx(classes.appBar,classes.colorChange, {
           [classes.appBarShift]: open,
         })}
+
       >
         <Toolbar>
           <IconButton

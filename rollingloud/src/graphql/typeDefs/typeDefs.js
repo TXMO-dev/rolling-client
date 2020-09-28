@@ -2,11 +2,8 @@ import gql from 'graphql-tag';
 
 const typeDefs = gql`
     extend type Mutation{
-        isLoggedin:Boolean!,    
-    }
-
-  
-
+        isLoggedin:Boolean!,   
+    }   
 `;
 
 export default typeDefs;

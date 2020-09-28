@@ -4,8 +4,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import CreateSharpIcon from '@material-ui/icons/CreateSharp';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,21 +18,6 @@ import gql from 'graphql-tag';
 import {useMutation,useApolloClient} from '@apollo/react-hooks';  
 import CircularProgress from '@material-ui/core/CircularProgress';
 import classname from 'classname';
-
-
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        Rolling Loud
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -71,7 +55,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+const GET_POST = gql`
+    query getCars @client{
+        getCars{
+            id
+            name
+            deal
+            price
+            dealer
+            dealer_image
+            dealer_id
+            description
+            condition
+            category
+            likeCount
+            reviewCount
+            Images{
+            id
+            path
+            }
+        }
+    }
+`
 
 const CreatePostComponent = (props) => {
   const classes = useStyles();
@@ -88,9 +93,16 @@ const CreatePostComponent = (props) => {
     const client = useApolloClient();
 
     const [createpostDispatch,{loading}] = useMutation(CREATE_POST,{
-        update(_,{data:{createCar}}){
+        update(cache,{data:{createCar}}){
             
-            if(createCar){   
+            if(createCar){ 
+                const {getCars} = cache.readQuery({
+                    query:GET_POST
+                })
+                cache.writeQuery({
+                    query:GET_POST,
+                    data:{getCars:[{...createCar,...getCars}]}
+                })
                 props.history.push('/dashboard');     
             }
 
@@ -129,10 +141,10 @@ const CreatePostComponent = (props) => {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <CreateSharpIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Create Post
         </Typography>
         <form onSubmit = {handleSubmit} className={classes.form} noValidate>
           <TextField
@@ -167,7 +179,7 @@ const CreatePostComponent = (props) => {
             fullWidth
             name="price"
             type="number"
-            label="Price"
+            label="Price ($)"
             onChange={handleChange}
             value={price}
             autoComplete="current-price"
@@ -245,7 +257,7 @@ const CreatePostComponent = (props) => {
 }
 
 const CREATE_POST = gql`
-    mutation(
+    mutation createCarPost(
         $name:String!
         $description:String!
         $price:String!
