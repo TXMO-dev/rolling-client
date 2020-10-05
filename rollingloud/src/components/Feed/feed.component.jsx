@@ -35,7 +35,7 @@ const FeedComponent = () => {
     if(networkStatus === networkStatus.poll){
         return (
             <div className={classname(classes.root,classes.circularCntr)}>
-              <CircularProgress />
+              <CircularProgress />  
             </div>
           );
     }
@@ -77,6 +77,7 @@ const GET_CAR_QUERY = gql`
             price
             dealer
             dealer_image
+            dealer_email
             dealer_id
             description
             condition

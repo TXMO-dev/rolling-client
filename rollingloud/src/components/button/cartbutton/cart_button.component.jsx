@@ -18,7 +18,7 @@ const CartButton = ({cart_post:{id,price,Images,name}}) => {
                     }
                     }); 
             } else{
-                return cartItemsVar([...cartItemsVar(),{id,price,first_image,name,qty}])        
+                return cartItemsVar([...cartItemsVar(),{id,price,first_image,name,qty}]);           
                 }        
             }
             } aria-label="shopping cart">

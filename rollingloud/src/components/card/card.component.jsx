@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CardComponent = ({id,name,price,deal,dealer,dealer_id,dealer_image,description,condition,category,likes,reviews,likeCount,reviewCount,Images,history}) => {
+const CardComponent = ({id,name,price,deal,dealer,dealer_id,dealer_image,dealer_email,description,condition,category,likes,reviews,likeCount,reviewCount,Images,history}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -204,12 +204,12 @@ if(loading){
             <LikeButton post = {{decoded_token,id,likeCount,likes}}/>        
             <ReviewComponent review_post={{id,reviews,reviewCount}}/>      
 
-            <CartButton cart_post = {{id,price,Images,name}}/>
+            <CartButton cart_post = {{id,price,dealer,dealer_email,Images,name}}/>
             
                 <Button onClick = {() => {
                   const qty = 1;
                   const first_image = Images[0]
-                  cartItemsVar([...cartItemsVar(),{id,price,first_image,name,qty}])   
+                  cartItemsVar([...cartItemsVar(),{id,price,first_image,name,dealer_email,qty}])   
                   return history.push('dashboard/cart')
                 }} variant='contained' color='primary'>Buy Now</Button>     
             

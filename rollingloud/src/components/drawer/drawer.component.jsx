@@ -30,6 +30,7 @@ import gql from 'graphql-tag';
 import AddCircleOutlineSharpIcon from '@material-ui/icons/AddCircleOutlineSharp';
 import Badge from '@material-ui/core/Badge';
 import {cartItemsVar} from './../button/cartbutton/cache/cart.cache';
+import jwtdecode from 'jwt-decode';
 
 
 
@@ -116,7 +117,9 @@ const useStyles = makeStyles((theme) => ({
 
         
 const MiniDrawer = (props) => {
-    {/*const decoded_user = jwtdecode(stored_token,{header:true});*/}
+  const stored_token = localStorage.getItem('token');
+  let decoded_user;  
+    if(stored_token !== undefined) decoded_user = jwtdecode(stored_token,{header:true});
     const client = useApolloClient();
   const classes = useStyles();
   const theme = useTheme();
@@ -129,15 +132,18 @@ const MiniDrawer = (props) => {
     setOpen(false);
   };
   
-  {/*const {loading,error,data,networkStatus} = useQuery(GET_USER,{
-      pollInterval:120000,
+  const {data} = useQuery(GET_USER,{
+      pollInterval:5000,
       notifyOnNetworkStatusChange:true,
-      variables:{
-          userId:decoded_user.id
-      }
-  });*/}
+  });
 
-  const {data} = useQuery(IS_LOGGED_IN);
+  const ind_data = {...data};
+  const {getMe} = ind_data;
+  const get_image = {...getMe};
+  const {user_image} = get_image;
+  const image_path = {...user_image};
+  const {path} = image_path;   
+
 
   
 //console.log(data)   
@@ -147,7 +153,7 @@ const MiniDrawer = (props) => {
   const menuListChoice = [
       {
           name:'Profile',
-          icon:<Avatar src = '' className={classes.small} alt="Remy Sharp" />,  
+          icon:<Avatar src = {path} className={classes.small} alt="Remy Sharp" />,  
           path:`${props.match.url}/profile`
 
       },
@@ -206,6 +212,8 @@ const MiniDrawer = (props) => {
       }
   ]
 
+  const decoded_token = jwtdecode(localStorage.getItem('token'));
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -260,13 +268,20 @@ const MiniDrawer = (props) => {
                             query:IS_LOGGED_IN,
                             data:{isLoggedin:false}
                         })
-                        localStorage.removeItem('token');
                         await client.clearStore();
+                        localStorage.removeItem('token');  
                         client.writeQuery({
                             query:IS_LOGGED_IN,
                             data:{isLoggedin:!!localStorage.getItem('token')}
                         })
+                        localStorage.clear();
                         return props.history.push('/login');
+                    
+                }
+                if((decoded_token.roles === 'User' && text.icon === <AddCircleOutlineSharpIcon/>) 
+                || (decoded_token.roles === 'User' && text.icon === <DirectionsCarIcon/>)){
+                  alert('you currently do not have access to these features please upgrade to dealer in order to use them')
+                  return props.history.push('/dashboard');  
                     
                 }
                 return props.history.push(text.path)
@@ -283,13 +298,23 @@ const MiniDrawer = (props) => {
   );
 }
 
-/*const GET_USER = gql`
-    query getUserById($userId:String!){
-        getUser(userId:$userId){
-            user_image{
-                path   
-            }
-        }
-}
-`*/
+const GET_USER = gql`
+  {
+    getMe{
+      id
+      full_name
+      username
+      description
+      user_image{
+          path
+      }
+      followingCount
+      followerCount
+      verified
+      roles
+      
+    }
+
+  } 
+`
 export default MiniDrawer;

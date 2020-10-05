@@ -77,11 +77,17 @@ const ReviewComponent = ({review_post:{id,reviewCount,reviews}}) => {
     const [createReview] = useMutation(CREATE_CAR_REVIEW,{
       update(cache,{data:{createReview}}){
           const {getCarReviews} = cache.readQuery({
-            query:CAR_REVIEW_CLIENT
+            query:CAR_REVIEW_CLIENT,
+            variables:{
+              carId:id
+            }
           })
           cache.writeQuery({
             query:CAR_REVIEW_CLIENT,
-            data:{getCarReviews:[{...createReview,...getCarReviews}]}  
+            data:{getCarReviews:[{...createReview,...getCarReviews}]},
+            variables:{
+              carId:id    
+            }
           })
       },
       onError(e){

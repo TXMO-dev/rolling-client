@@ -52,7 +52,7 @@ const LikeButton = ({post:{decoded_token,id,likes,likeCount}}) => {
         variables:{
             carId:id
         },
-        refetchQueries:[{query:CAR_QUERY}]     
+        refetchQueries:[{query:CAR_QUERY}]         
     })
  
     return (

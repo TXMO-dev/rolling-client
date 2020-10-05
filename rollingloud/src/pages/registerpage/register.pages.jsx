@@ -95,7 +95,8 @@ const RegisterPage = (props) => {
     const [registerDispatch,{loading}] = useMutation(REGISTER_USER,{
         update(_,{data:{register}}){
             
-            if(register){   
+            if(register){ 
+              localStorage.setItem('token',register.token);       
                 props.history.push('/dashboard');     
             }
 
@@ -104,7 +105,6 @@ const RegisterPage = (props) => {
                 alert(`${e}`);  
         },
         onCompleted({register}){   
-                localStorage.setItem('token',register.token);
                 const {isLoggedin}  = client.readQuery({
                     query:IS_LOGGED_IN
                 })

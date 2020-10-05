@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import AppProvider from './utils/AppProvider'
+import AppProvider from './utils/AppProvider';
+import 'jwt-decode';
+
 
 
 ReactDOM.render(<AppProvider />,document.getElementById('root'));

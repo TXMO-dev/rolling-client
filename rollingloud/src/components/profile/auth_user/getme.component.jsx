@@ -97,7 +97,7 @@ export default MyProfileComponent;
 
 const GET_MY_PROFILE = gql`
     {
-	getMe{
+	getMe @client{
     id
     full_name
     username

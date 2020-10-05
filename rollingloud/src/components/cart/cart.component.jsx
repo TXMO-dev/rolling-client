@@ -11,7 +11,10 @@ import Paper from '@material-ui/core/Paper';
 import {Button, makeStyles, Typography} from '@material-ui/core';
 import AddShoppingCartOutlinedIcon from '@material-ui/icons/AddShoppingCartOutlined';
 import HighlightOffSharpIcon from '@material-ui/icons/HighlightOffSharp';
-import {IconButton} from '@material-ui/core'
+import { usePaystackPayment } from 'react-paystack';
+import {IconButton} from '@material-ui/core';
+import jwt_decode from 'jwt-decode';
+import configPub from './../../utils/paystack.utils';
     
 //the tax rate will depend on your location so for now its just the default one working
 const TAX_RATE = 0.07;
@@ -65,6 +68,25 @@ const CartComponent = ({history}) => {
       const invoiceTaxes = TAX_RATE * invoiceSubtotal;
       const invoiceTotal = invoiceTaxes + invoiceSubtotal;
       const classes = useStyles();
+      const decoded_token = jwt_decode(localStorage.getItem('token'))
+      const config = {
+        reference: (new Date()).getTime(),
+        email: decoded_token.email,
+        amount: ccyFormat(invoiceTotal) * 100,  
+        publicKey: configPub.publicKey,
+        channels:['card','bank','bank_transfer'],
+        currency:'GHS',  
+        label:decoded_token.username,
+        text:"checkout",
+        onSuccess:() => alert('the transaction has been successful'),
+        onClose:() => alert('sorry but we could not proceed with the transaction')     
+    };
+
+    const initializePayment = usePaystackPayment(config);
+
+
+
+     
   
     
 
@@ -122,8 +144,14 @@ const CartComponent = ({history}) => {
             <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
           </TableRow>
         </TableBody>
-      </Table>
-      <Button className={classes.posAndCol} color='primary'>Checkout</Button>
+      </Table>  
+      
+        
+          <Button className={classes.posAndCol} color='primary' onClick = {() => initializePayment()} >{config.text}</Button>
+        
+          
+      
+      
     </TableContainer>
     </div>
     )

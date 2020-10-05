@@ -68,6 +68,7 @@ const LoginPage = (props) => {
   const [loginDispatch,{loading}] = useMutation(LOGIN_USER,{
       update(_,{data:{login}}){
             if(login){
+                localStorage.setItem('token',login.token);
                 props.history.push('/dashboard')
             }
       },
@@ -75,7 +76,6 @@ const LoginPage = (props) => {
           alert(`${e.graphQLErrors[0].message}`);
       },
       onCompleted({login}){
-          localStorage.setItem('token',login.token);
           const {isLoggedin}  = client.readQuery({
             query:IS_LOGGED_IN
         });
