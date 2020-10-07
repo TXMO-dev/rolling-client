@@ -15,7 +15,7 @@ import {cartItemsVar} from './../components/button/cartbutton/cache/cart.cache'
 
 const AppProvider = () => {
     const httplink = createUploadLink({
-        uri:'http://localhost:5000/',
+        uri:'https://polar-lake-80964.herokuapp.com/',
     });
     const authLink = setContext((_, { headers }) => {
         const token = localStorage.getItem('token');

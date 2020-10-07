@@ -54,7 +54,7 @@ const FollowerButton = ({follow_post:{decoded_token,match,following}}) => {
                 variables:{
                     userId:`${match.params.userId}`
                 }          
-            })
+            })   
         },
         variables:{
             userId:`${match.params.userId}`   
