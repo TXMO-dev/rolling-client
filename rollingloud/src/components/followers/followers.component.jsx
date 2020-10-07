@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import gql from 'graphql-tag'
-import jwtdecode from 'jwt-decode';
+//import jwtdecode from 'jwt-decode';
 import classname from 'classname';
 
 const useStyles = makeStyles({
